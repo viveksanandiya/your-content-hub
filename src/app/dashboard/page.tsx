@@ -1,12 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import Header from '@/components/Header';
 import ContentCard from '@/components/ContentCard';
 import { Content, ContentCategory } from '@/types/types';
 
-export default function DashboardPage() {
+// Separate component for the search params logic
+function DashboardContent() {
   const { isAuthenticated, user, loading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -73,7 +74,7 @@ export default function DashboardPage() {
 
           switch (category){
             case 'news':
-              apiUrl = `/api/news?category=general&pageSize=10${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ''}`;
+              apiUrl = `/api/content/news?category=general&pageSize=10${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ''}`;
               break;
 
             case 'movies':
@@ -302,5 +303,31 @@ export default function DashboardPage() {
         )}
       </main>
     </div>
+  );
+}
+
+// Loading component for Suspense fallback
+function DashboardLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading dashboard...</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+// Main Dashboard component with Suspense boundary
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<DashboardLoading />}>
+      <DashboardContent />
+    </Suspense>
   );
 }
