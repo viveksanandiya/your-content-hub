@@ -1,14 +1,15 @@
 "use client"
 
-
+import { useRouter } from 'next/navigation';
 import { Newspaper, Trophy, Cpu, Heart, Settings, Star, Play, Headphones, Monitor, Menu, X } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 import { useState } from "react"
 import Button from "@/components/ui/Button"
+import { Router } from "next/router"
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const router = useRouter();
 
   const categories = [
     {
@@ -90,7 +91,7 @@ export default function LandingPage() {
               <Link href="#about" className="text-sm font-medium hover:text-blue-600 transition-colors">
                 About
               </Link>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
+              <Button variant="landing" className="bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
             </nav>
 
             {/* Mobile menu button */}
@@ -113,7 +114,7 @@ export default function LandingPage() {
                   About
                 </Link>
                 <div className="pt-4">
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
+                  <Button variant="landing" className="w-full bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
                 </div>
               </nav>
             </div>
@@ -143,7 +144,7 @@ export default function LandingPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button  className="size-lg text-lg px-8 bg-blue-600 hover:bg-blue-700 text-white">
+                <Button variant="landing" className="size-lg text-lg px-8 bg-blue-600 hover:bg-blue-700 text-white">
                   Start Personalizing
                 </Button>
               </div>
@@ -166,13 +167,11 @@ export default function LandingPage() {
 
             <div className="relative">
               <div className="relative z-10">
-                <Image
-                  src="/placeholder.svg?height=600&width=600&text=ContentHub+Dashboard"
-                  alt="ContentHub Dashboard"
-                  width={600}
+                
+                <img src="https://storyset.com/illustration/instant-information/cuate" alt="" width={600}
                   height={600}
-                  className="rounded-2xl shadow-2xl"
-                />
+                  className="rounded-2xl shadow-2xl" />
+
               </div>
               <div className="absolute -top-4 -right-4 w-72 h-72 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full blur-3xl opacity-20"></div>
               <div className="absolute -bottom-4 -left-4 w-72 h-72 bg-gradient-to-br from-blue-300 to-blue-500 rounded-full blur-3xl opacity-20"></div>
@@ -195,19 +194,20 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="bg-white grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {categories.map((category, index) => {
               const IconComponent = category.icon
               return (
                 <div
                   key={index}
-                  className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-blue-200 rounded-lg p-6 bg-white dark:bg-gray-900"
+                  className="  group hover:shadow-lg transition-all duration-300 border-2 hover:border-blue-200 rounded-lg p-6 bg-white"
                 >
-                  <div className="space-y-4">
+                  <div className="space-y-4 ">
                     <div className="flex items-center space-x-4">
                       <div
                         className={`p-3 rounded-lg ${category.color} text-white group-hover:scale-110 transition-transform`}
                       >
+                        
                         <IconComponent className="h-6 w-6" />
                       </div>
                       <div>
@@ -215,11 +215,11 @@ export default function LandingPage() {
                       </div>
                     </div>
                     <p className="text-base text-muted-foreground">{category.description}</p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 ">
                       {category.items.map((item, itemIndex) => (
                         <span
                           key={itemIndex}
-                          className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs font-medium"
+                          className="px-2 py-1 rounded text-xs font-medium"
                         >
                           {item}
                         </span>
@@ -234,8 +234,8 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 lg:py-32 bg-gray-50 dark:bg-gray-900/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="features" className="py-20 lg:py-32 bg-white">
+        <div className="bg-white container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-16">
             <div className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
               Key Features
@@ -247,14 +247,15 @@ export default function LandingPage() {
             </p>
           </div>
 
+
+{/* ------------ */}
           <div className="grid lg:grid-cols-3 gap-8">
             {features.map((feature, index) => {
               const IconComponent = feature.icon
               return (
                 <div
                   key={index}
-                  className="text-center group hover:shadow-lg transition-all duration-300 p-6 bg-white dark:bg-gray-900 rounded-lg"
-                >
+                  className="text-center group hover:shadow-lg transition-all duration-300 p-6 bg-blue-200 rounded-lg"                >
                   <div className="space-y-4">
                     <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
                       <IconComponent className="h-8 w-8 text-white" />
@@ -270,7 +271,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-32 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+      <section className="py-20 lg:py-32 bg-gradient-to-r from-blue-200 to-blue-800 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="space-y-8 max-w-4xl mx-auto">
             <h2 className="text-3xl lg:text-5xl font-bold">Ready to Transform Your Content Experience?</h2>
@@ -280,7 +281,7 @@ export default function LandingPage() {
             </p>
 
             <div className="flex justify-center">
-              <Button className="size-lg bg-white text-blue-600 hover:bg-gray-100 text-lg px-8">
+              <Button variant="landing" className="size-lg text-blue-600 text-lg px-8">
                 Get Started Free
               </Button>
             </div>
@@ -291,7 +292,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t bg-gray-50 dark:bg-gray-900/50">
+      <footer className="py-12 border-t bg-gradient-to-r from-blue-200 to-blue-800 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
