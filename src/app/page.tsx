@@ -4,9 +4,11 @@ import { Newspaper, Trophy, Cpu, Heart, Settings, Star, Play, Headphones, Monito
 import Link from "next/link"
 import { useState } from "react"
 import Button from "@/components/ui/Button"
+import { useRouter } from "next/navigation"
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const router = useRouter()
     
   const categories = [
     {
@@ -64,6 +66,10 @@ export default function LandingPage() {
     },
   ]
 
+  const handleGetStarted = () => {
+    router.push('/auth')
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -88,7 +94,13 @@ export default function LandingPage() {
               <Link href="#about" className="text-sm font-medium hover:text-blue-600 transition-colors">
                 About
               </Link>
-              <Button variant="landing" className="bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
+              <Button 
+                variant="landing" 
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={handleGetStarted}
+              >
+                Get Started
+              </Button>
             </nav>
 
             {/* Mobile menu button */}
@@ -111,7 +123,13 @@ export default function LandingPage() {
                   About
                 </Link>
                 <div className="pt-4">
-                  <Button variant="landing" className="w-full bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
+                  <Button 
+                    variant="landing" 
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={handleGetStarted}
+                  >
+                    Get Started
+                  </Button>
                 </div>
               </nav>
             </div>
@@ -141,7 +159,11 @@ export default function LandingPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="landing" className="size-lg text-lg px-8 bg-blue-600 hover:bg-blue-700 text-white">
+                <Button 
+                  variant="landing" 
+                  className="size-lg text-lg px-8 bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={handleGetStarted}
+                >
                   Start Personalizing
                 </Button>
               </div>
@@ -164,11 +186,12 @@ export default function LandingPage() {
 
             <div className="relative">
               <div className="relative z-10">
-                
-                <img src="https://storyset.com/illustration/instant-information/cuate" alt="" width={600}
+                <img 
+src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&h=600&fit=crop&crop=center"                  alt="Social media and content consumption illustration" 
+                  width={600}
                   height={600}
-                  className="rounded-2xl shadow-2xl" />
-
+                  className="rounded-2xl shadow-2xl object-cover" 
+                />
               </div>
               <div className="absolute -top-4 -right-4 w-72 h-72 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full blur-3xl opacity-20"></div>
               <div className="absolute -bottom-4 -left-4 w-72 h-72 bg-gradient-to-br from-blue-300 to-blue-500 rounded-full blur-3xl opacity-20"></div>
@@ -278,7 +301,11 @@ export default function LandingPage() {
             </p>
 
             <div className="flex justify-center">
-              <Button variant="landing" className="size-lg text-blue-600 text-lg px-8">
+              <Button 
+                variant="landing" 
+                className="size-lg text-blue-600 text-lg px-8"
+                onClick={handleGetStarted}
+              >
                 Get Started Free
               </Button>
             </div>
