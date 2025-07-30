@@ -1,16 +1,13 @@
 "use client"
 
-import { useRouter } from 'next/navigation';
 import { Newspaper, Trophy, Cpu, Heart, Settings, Star, Play, Headphones, Monitor, Menu, X } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import Button from "@/components/ui/Button"
-import { Router } from "next/router"
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const router = useRouter();
-
+    
   const categories = [
     {
       icon: Newspaper,
