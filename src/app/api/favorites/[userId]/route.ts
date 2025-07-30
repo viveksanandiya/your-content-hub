@@ -2,19 +2,22 @@ import dbConnect from '@/lib/db';
 import Favorite from '@/model/Favorite';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request, { params }: { params: { userId: string } }) {
-  
-  try{
-
+export async function GET(
+  req: Request, 
+  { params }: { params: Promise<{ userId: string }> }
+) {
+  try {
+    const { userId } = await params;
+    
     await dbConnect();
-    const favorites = await Favorite.find({ userId: params.userId }).sort({ createdAt: -1 });
+    const favorites = await Favorite.find({ userId }).sort({ createdAt: -1 });
 
     return NextResponse.json({
       success: true,
       message: favorites,
     });
 
-  }catch(err){
+  } catch(err) {
     console.error('Error fetching favorites:', err);
     return NextResponse.json({ 
       success: false,
@@ -23,18 +26,23 @@ export async function GET(req: Request, { params }: { params: { userId: string }
   }
 }
 
-export async function POST(req: Request, { params }: { params: { userId: string } }) {
+export async function POST(
+  req: Request, 
+  { params }: { params: Promise<{ userId: string }> }
+) {
   try {
+    const { userId } = await params;
+    
     await dbConnect();
     const body = await req.json();
 
     const existingFavorite = await Favorite.findOne({
-      userId: params.userId,
+      userId,
       title: body.title,
       url: body.url
     });
 
-    if(existingFavorite){
+    if(existingFavorite) {
       return NextResponse.json({
         success: false,
         error: 'favorite exist'
@@ -43,7 +51,7 @@ export async function POST(req: Request, { params }: { params: { userId: string 
 
     const favorite = await Favorite.create({ 
       ...body, 
-      userId: params.userId 
+      userId 
     });
 
     return NextResponse.json({
@@ -51,7 +59,7 @@ export async function POST(req: Request, { params }: { params: { userId: string 
       message: favorite
     });
 
-  }catch(err){
+  } catch(err) {
     console.error('Error saving favorite:', err);
     return NextResponse.json({ 
       success: false,
@@ -60,18 +68,22 @@ export async function POST(req: Request, { params }: { params: { userId: string 
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { userId: string } }) {
+export async function DELETE(
+  req: Request, 
+  { params }: { params: Promise<{ userId: string }> }
+) {
   try {
+    const { userId } = await params;
+    
     await dbConnect();
     const body = await req.json();
-    const { contentId} = body;
+    const { contentId } = body;
 
     // Try to delete by contentId first, then by title and url as fallback
     let deleteQuery;
-    if(contentId){
-      deleteQuery = { _id: contentId, userId: params.userId };
-    }
-    else{
+    if(contentId) {
+      deleteQuery = { _id: contentId, userId };
+    } else {
       return NextResponse.json({
         success: false,
         error: 'Content not found'
@@ -80,7 +92,7 @@ export async function DELETE(req: Request, { params }: { params: { userId: strin
 
     const deletedFavorite = await Favorite.findOneAndDelete(deleteQuery);
 
-    if(!deletedFavorite){
+    if(!deletedFavorite) {
       return NextResponse.json({
         success: false,
         error: 'Favorite not found'
@@ -92,7 +104,7 @@ export async function DELETE(req: Request, { params }: { params: { userId: strin
       message: 'Favorite removed successfully'
     });
 
-  }catch(err){
+  } catch(err) {
     console.error('Error removing favorite:', err);
     return NextResponse.json({ 
       success: false,
