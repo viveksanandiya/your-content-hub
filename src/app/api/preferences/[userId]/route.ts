@@ -5,18 +5,20 @@ import Preference from "@/model/Preference";
 // GET preference
 export async function GET(
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
+    const { userId } = await params;
+    
     await dbConnect();
-    const preference = await Preference.findOne({ userId: params.userId });
+    const preference = await Preference.findOne({ userId });
 
     if (!preference) {
       // Return default preferences if none exist
       return NextResponse.json({
         success: true,
         message: {
-          userId: params.userId,
+          userId,
           category: ['news', 'technology', 'entertainment'] // Default categories
         }
       });
@@ -38,17 +40,18 @@ export async function GET(
 //UPDATE preference
 export async function POST(
   req: Request,
-  { params }:{params: {userId:string}}
-){
-
-  try{
+  { params }: { params: Promise<{ userId: string }> }
+) {
+  try {
+    const { userId } = await params;
+    
     await dbConnect();
 
     const body = await req.json();
-    const { category} = body;
+    const { category } = body;
 
     // Validate category array
-    if (!Array.isArray(category)){
+    if (!Array.isArray(category)) {
       return NextResponse.json({
         success: false,
         error: "Category not found",
@@ -67,9 +70,9 @@ export async function POST(
     }
 
     const updatedPreference = await Preference.findOneAndUpdate(
-      { userId: params.userId },
+      { userId },
       { category },
-      { upsert:true, new: true}
+      { upsert: true, new: true }
     );
 
     if (!updatedPreference) {
@@ -84,7 +87,7 @@ export async function POST(
       message: updatedPreference,
     });
 
-  }catch(err){
+  } catch(err) {
     console.error("Error updating preference:", err);
     return NextResponse.json({
       success: false,
